@@ -22,4 +22,3 @@ print("DataFrame columns:", data.columns)
 
 # Criar features
 data = create_features(data)
-
