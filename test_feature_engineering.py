@@ -17,6 +17,14 @@ mt5.shutdown()
 # Converter os dados históricos para um DataFrame do pandas
 data = pd.DataFrame(rates)
 
+if data.empty:
+    print("O DataFrame está vazio.")
+else:
+    print("O DataFrame contém dados.")
+
+# Renomear as colunas
+data.columns = ['time', 'open', 'high', 'low', 'close', 'tick_volume', 'spread', 'real_volume']
+
 # Imprimir colunas do DataFrame
 print("DataFrame columns:", data.columns)
 
