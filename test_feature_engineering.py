@@ -5,6 +5,10 @@ from datetime import datetime
 from feature_engineering import create_features
 
 def get_historical_data(symbol, timeframe, start_time, end_time):
+    if not mt5.symbol_select(symbol, True):
+        print(f"Não foi possível selecionar {symbol} no MetaTrader 5.")
+        return pd.DataFrame()
+    
     rates = mt5.copy_rates_range(symbol, timeframe, start_time, end_time)
     
     if rates is None or len(rates) == 0:
@@ -26,7 +30,7 @@ print("initialize() succeeded")
 print(mt5.terminal_info())
 print(mt5.account_info())
 
-symbol = "GOLD"
+symbol = "XAUUSD"
 timeframe = mt5.TIMEFRAME_M1
 start_time = datetime(2023, 4, 1)
 end_time = datetime(2023, 4, 15)
@@ -40,4 +44,3 @@ else:
     print(data.head())
 
 mt5.shutdown()
-
