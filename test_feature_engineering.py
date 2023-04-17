@@ -22,14 +22,15 @@ if data.empty:
 else:
     print("O DataFrame contém dados.")
 
-# Renomear as colunas
-data.columns = ['time', 'open', 'high', 'low', 'close', 'tick_volume', 'spread', 'real_volume']
+    # Renomear as colunas
+    data.columns = ['time', 'open', 'high', 'low', 'close', 'tick_volume', 'spread', 'real_volume']
 
-# Imprimir colunas do DataFrame
-print("DataFrame columns:", data.columns)
+    # Imprimir colunas do DataFrame
+    print("DataFrame columns:", data.columns)
 
-# Imprimir as primeiras linhas do DataFrame
-print(data.head())
+    # Imprimir as primeiras linhas do DataFrame
+    print(data.head())
 
-# Criar features
-data = create_features(data, open_col="open", high_col="high", low_col="low", close_col="close", volume_col="tick_volume")
+    # Criar features
+    data = create_features(data, open_col="open", high_col="high", low_col="low", close_col="close", volume_col="tick_volume")
+
