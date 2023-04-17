@@ -1,39 +1,43 @@
 import MetaTrader5 as mt5
-from feature_engineering import create_features
 import pandas as pd
+from datetime import datetime
 
-# Conectar ao terminal MetaTrader 5
+from feature_engineering import create_features
+
+def get_historical_data(symbol, timeframe, start_time, end_time):
+    rates = mt5.copy_rates_range(symbol, timeframe, start_time, end_time)
+    
+    if rates is None or len(rates) == 0:
+        print(f"Não foi possível obter dados históricos para {symbol}.")
+        return pd.DataFrame()
+    
+    data = pd.DataFrame(rates)
+    data['time'] = pd.to_datetime(data['time'], unit='s')
+    data.set_index('time', inplace=True)
+    data = data[['open', 'high', 'low', 'close', 'tick_volume', 'spread', 'real_volume']]
+    
+    return data
+
 if not mt5.initialize():
     print("initialize() failed")
     mt5.shutdown()
+
+print("initialize() succeeded")
+print(mt5.terminal_info())
+print(mt5.account_info())
+
+symbol = "XAUUSD"
+timeframe = mt5.TIMEFRAME_M1
+start_time = datetime(2023, 4, 1)
+end_time = datetime(2023, 4, 15)
+
+data = get_historical_data(symbol, timeframe, start_time, end_time)
+
+if data.empty:
+    print("O DataFrame está vazio.")
 else:
-    print("initialize() succeeded")
-    print("Terminal info:", mt5.terminal_info())
-    print("Account info:", mt5.account_info())
+    data = create_features(data, open_col="open", high_col="high", low_col="low", close_col="close", volume_col="tick_volume")
+    print(data.head())
 
-    # Obter dados históricos
-    symbol = "XAUUSD"  # ou "GOLD", se a sua corretora usar essa nomenclatura
-    rates = mt5.copy_rates_from_pos(symbol, mt5.TIMEFRAME_M1, 0, 1000)
+mt5.shutdown()
 
-    # Desconectar do terminal
-    mt5.shutdown()
-
-    # Converter os dados históricos para um DataFrame do pandas
-    data = pd.DataFrame(rates)
-
-    if data.empty:
-        print("O DataFrame está vazio.")
-    else:
-        print("O DataFrame contém dados.")
-
-        # Renomear as colunas
-        data.columns = ['time', 'open', 'high', 'low', 'close', 'tick_volume', 'spread', 'real_volume']
-
-        # Imprimir colunas do DataFrame
-        print("DataFrame columns:", data.columns)
-
-        # Imprimir as primeiras linhas do DataFrame
-        print(data.head())
-
-        # Criar features
-        data = create_features(data, open_col="open", high_col="high", low_col="low", close_col="close", volume_col="tick_volume")
