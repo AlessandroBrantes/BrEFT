@@ -17,9 +17,6 @@ mt5.shutdown()
 # Converter os dados históricos para um DataFrame do pandas
 data = pd.DataFrame(rates)
 
-# Renomear as colunas
-data.columns = ['time', 'open', 'high', 'low', 'close', 'tick_volume', 'spread', 'real_volume']
-
 # Imprimir colunas do DataFrame
 print("DataFrame columns:", data.columns)
 
@@ -27,4 +24,4 @@ print("DataFrame columns:", data.columns)
 print(data.head())
 
 # Criar features
-data = create_features(data)
+data = create_features(data, open_col="open", high_col="high", low_col="low", close_col="close", volume_col="tick_volume")
