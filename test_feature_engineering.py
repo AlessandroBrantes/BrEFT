@@ -23,5 +23,8 @@ data.columns = ['time', 'open', 'high', 'low', 'close', 'tick_volume', 'spread',
 # Imprimir colunas do DataFrame
 print("DataFrame columns:", data.columns)
 
+# Imprimir as primeiras linhas do DataFrame
+print(data.head())
+
 # Criar features
 data = create_features(data)
