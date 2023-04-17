@@ -12,7 +12,7 @@ else:
     print("Account info:", mt5.account_info())
 
     # Obter dados históricos
-    symbol = "GOLD"  # ou "XAUUSD", se a sua corretora usar essa nomenclatura
+    symbol = "XAUUSD"  # ou "GOLD", se a sua corretora usar essa nomenclatura
     rates = mt5.copy_rates_from_pos(symbol, mt5.TIMEFRAME_M1, 0, 1000)
 
     # Desconectar do terminal
