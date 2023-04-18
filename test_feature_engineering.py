@@ -2,6 +2,7 @@ import MetaTrader5 as mt5
 from datetime import datetime
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
 from feature_engineering import create_features, create_target
 
 symbol = "GOLD"
@@ -44,7 +45,16 @@ else:
     print("Head of y:")
     print(y.head())
 
+    # Etapa 3: Seleção e treinamento do modelo
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    # Treinar o modelo
+    clf = DecisionTreeClassifier()
+    clf.fit(X_train, y_train)
+
+    # Avaliar o desempenho do modelo
+    score = clf.score(X_test, y_test)
+    print("Accuracy:", score)
 
 mt5.shutdown()
 
