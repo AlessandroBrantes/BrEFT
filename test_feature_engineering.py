@@ -1,6 +1,9 @@
 import MetaTrader5 as mt5
 import pandas as pd
 from datetime import datetime
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
 
 from feature_engineering import create_features
 
@@ -41,6 +44,25 @@ if data.empty:
     print("O DataFrame está vazio.")
 else:
     data = create_features(data, open_col="open", high_col="high", low_col="low", close_col="close", volume_col="tick_volume")
-    print(data.head())
+    data['target_column'] = np.sign(data['close'].pct_change().shift(-1))
+    
+    # Remover linhas com valores NaN
+    data.dropna(inplace=True)
+    
+    # Preparar os dados de entrada (features) e saída (target)
+    X = data.drop(columns=["target_column"])
+    y = data["target_column"]
+
+    # Dividir os dados em conjuntos de treinamento e teste
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    # Treinar o modelo
+    clf = DecisionTreeClassifier()
+    clf.fit(X_train, y_train)
+
+    # Avaliar o desempenho do modelo
+    score = clf.score(X_test, y_test)
+    print("Accuracy:", score)
 
 mt5.shutdown()
+
