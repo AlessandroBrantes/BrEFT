@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-import talib
 from ta import add_all_ta_features
 
 def create_target(data, close_col='close', shift=-1):
@@ -22,4 +21,5 @@ def create_features(data, open_col, high_col, low_col, close_col, volume_col):
     # Exemplo: data['custom_feature'] = ...
 
     return data
+
 
