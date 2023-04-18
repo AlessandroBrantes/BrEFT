@@ -4,7 +4,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from feature_engineering import create_features, create_target
 
-symbol = "PETR4"
+symbol = "GOLD"
 timezone_offset = -3
 timeframe = mt5.TIMEFRAME_M1
 start_time = datetime(2023, 4, 3)
