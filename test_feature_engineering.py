@@ -30,7 +30,7 @@ print("initialize() succeeded")
 print(mt5.terminal_info())
 print(mt5.account_info())
 
-symbol = "VALE3"
+symbol = "GOLD"
 timeframe = mt5.TIMEFRAME_M1
 start_time = datetime(2023, 4, 1)
 end_time = datetime(2023, 4, 15)
