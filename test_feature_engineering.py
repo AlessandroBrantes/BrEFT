@@ -1,8 +1,26 @@
 import pandas as pd
-from feature_engineering import create_features, create_target
+from ta import add_all_ta_features
+import warnings
 
-def test_feature_engineering():
-    data = pd.read_csv("GOLD_M1.csv")
+warnings.filterwarnings("ignore", category=RuntimeWarning)
+
+def create_features(df):
+    df['time'] = pd.to_datetime(df['time'], format="%Y.%m.%d %H:%M:%S")
+    df.set_index('time', inplace=True)
+    
+    df = add_all_ta_features(
+        df, open="open", high="high", low="low", close="close", volume="tick_volume"
+    )
+
+    return df
+
+def create_target(df, shift=-1):
+    df['target'] = df['close'].shift(shift)
+    df.dropna(inplace=True)
+    return df
+
+def test_feature_engineering(asset):
+    data = pd.read_csv(f"{asset}_M1.csv")
     data = create_features(data)
     data = create_target(data)
     
@@ -18,7 +36,9 @@ def test_feature_engineering():
     print("Head of y:\n", y.head())
 
 if __name__ == "__main__":
-    test_feature_engineering()
+    asset = "GOLD"
+    test_feature_engineering(asset)
+
 
 
 
